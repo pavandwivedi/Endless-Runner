@@ -10,6 +10,7 @@ import versionRouter from './src/routers/versionRouter.js';
 import cors from 'cors';
 
 import connectDB from './src/config/db.config.js';
+import challengeRouter from './src/routers/user.challenge.route.js';
 dotenv.config();
 
 const app = express();
@@ -22,6 +23,7 @@ app.use("/admin",adminRouter);
 app.use("/level",levelRouter);
 //app.use("/achievement",achievementRouter);
 app.use("/version",versionRouter);
+app.use('/challenge',challengeRouter);
 
 
 const port = process.env.PORT || 7000;

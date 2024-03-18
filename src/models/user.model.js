@@ -23,10 +23,7 @@ const commonSchema = mongoose.Schema({
         type:Number,
         default:0
     },
-    movecount:{
-        type:Number,
-        default:5
-    },
+  
     highestScore:{
         type:Number,
         default:0
@@ -35,19 +32,17 @@ const commonSchema = mongoose.Schema({
         type: Number,
         default:0
     },
-    vehiclePower:{
+    magnetPower:{
         type: Number,
         default:0
     },
-    
-    achievements:[
+    challenges:[
         {
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"achievement"
-         
+            type: mongoose.Schema.Types.ObjectId,
+            ref:'challenge',
+
         }
     ],
-  
     levels:[
         {
             type:mongoose.Schema.Types.ObjectId,
