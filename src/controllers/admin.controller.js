@@ -102,7 +102,9 @@ export async function createChallengeController(req, res) {
 export async function getChallengeController(req,res){
     try {
         
-        const challengeDetails = await createChallengeModel.findOne({});
+        const challengeDetails = await createChallengeModel.find({});
+        
+
         if(! challengeDetails){
             return res.send(error(404,"no challenge exit"))
         }
