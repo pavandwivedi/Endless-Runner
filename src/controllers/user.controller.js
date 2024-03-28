@@ -226,6 +226,28 @@ export async function updateCoinController(req,res){
     }
 }
 
+export async function updateHighestDistanceController(req,res){
+    const id =req._id;
+    const highestdistance = req.body.highestdistance;
+    if (highestdistance<0){
+        return res.send(error(400,"highestdistance cannot be negative"));
+    }
+    try {
+        const user =await userModel.findById(id);
+        if(!user){
+            return res.send(error(404,"user not found"));
+        }
+        if(user.highestdistance<highestdistance){
+        user.highestdistance =highestdistance;
+    }
+        await user.save();
+        return res.send(success(200,"highestdistance updated successfully"));
+
+    } catch (err) {
+        return res.send(error(500,err.message));
+    }
+}
+
 export async function decreaseCoinsController(req,res){
     const id =req._id;
     const Coins = req.body.Coins;

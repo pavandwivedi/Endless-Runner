@@ -21,12 +21,18 @@ const commonSchema = mongoose.Schema({
     referedCount:{type:Number,default:0},
    coins:{
         type:Number,
-        default:0
+        default:0,
+        min:0
     },
   
     highestScore:{
         type:Number,
         default:0
+    },
+    highestdistance:{
+        type:Number,
+        default:0,
+        min:0
     },
     ruby:{
         type: Number,
