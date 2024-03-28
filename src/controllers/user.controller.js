@@ -248,6 +248,28 @@ export async function updateHighestDistanceController(req,res){
     }
 }
 
+export async function updateTotalDistanceController(req,res){
+    console.log('pavan')
+    const id =req._id;
+    const distance = req.body.distance;
+    
+    if (distance<0){
+        return res.send(error(400,"distance cannot be negative"));
+    }
+    try {
+        const user =await userModel.findById(id);
+        if(!user){
+            return res.send(error(404,"user not found"));
+        }
+        user.totaldistance += distance;
+        await user.save();
+        return res.send(success(200,"total distance updated successfully"));
+
+    } catch (err) {
+        return res.send(error(500,err.message));
+    }
+}
+
 export async function decreaseCoinsController(req,res){
     const id =req._id;
     const Coins = req.body.Coins;
