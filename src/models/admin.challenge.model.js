@@ -6,6 +6,10 @@ const createChallengeSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  challengetype:{
+    type:String,
+    required:true
+  },
   description: {
     type: String,
     required: true
@@ -13,6 +17,10 @@ const createChallengeSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
+  },
+  taskamount:{
+    type:Number,
+    required:true
   },
   rewards: {
     type: Number, 

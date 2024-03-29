@@ -72,11 +72,11 @@ export async function getAllUsers(req,res){
 }
 
 export async function createChallengeController(req, res) {
-    const { name, description, isActive, rewards,duration } = req.body;
+    const { name, description, isActive, rewards,duration ,challengetype,taskamount} = req.body;
     
     try {
         // Validate required fields
-        if (!name || !description || !rewards || !duration) {
+        if (!name || !description || !rewards || !duration || !challengetype || !taskamount) {
              return res.send(error(404,"insufficient data"))
         }
 
@@ -86,13 +86,15 @@ export async function createChallengeController(req, res) {
             description,
             isActive: isActive || true, // Default isActive to true if not provided
             rewards,
-            duration
+            duration,
+            challengetype,
+            taskamount
         });
 
         // Save the new challenge to the database
         const savedChallenge = await newChallenge.save();
 
-        return res.send(success(200,"challenge created successfully"));
+        return res.send(success(200,"challenge created successfully",savedChallenge));
     } catch (err) {
         
         return res.send(error(500,err.message));
@@ -116,7 +118,7 @@ export async function getChallengeController(req,res){
 
 export async function updateChallengeController(req, res) {
      const { id } = req.params; 
-    const { name, description, isActive, rewards, duration } = req.body;
+    const { name, description, isActive, rewards, duration,challengetype,taskamount } = req.body;
 
     try {
        
@@ -144,6 +146,13 @@ export async function updateChallengeController(req, res) {
         if (duration) {
             existingChallenge.duration = duration;
         }
+        if (taskamount) {
+            existingChallenge.taskamount = taskamount;
+        }
+        if (challengetype) {
+            existingChallenge.challengetype = challengetype;
+        }
+
 
         // Save the updated challenge to the database
         const updatedChallenge = await existingChallenge.save();
