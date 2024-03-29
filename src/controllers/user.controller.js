@@ -247,7 +247,27 @@ export async function updateDistanceController(req,res){
         return res.send(error(500,err.message));
     }
 }
+export async function updateScoreController(req,res){
+         
+    const id =req._id;
+    const score = req.body.score;
+    
+    try {
+        const user =await userModel.findById(id);
+        if(!user){
+            return res.send(error(404,"user not found"));
+        }
+        if(user.highestscore<score){
+            user.highestscore=score;
+        }
+        user.currscore = score;
+        await user.save();
+        return res.send(success(200,{highestscore:user.highestscore,currscore:user.currscore}));
 
+    } catch (err) {
+        return res.send(error(500,err.message));
+    }
+}
 export async function decreaseCoinsController(req,res){
     const id =req._id;
     const Coins = req.body.Coins;

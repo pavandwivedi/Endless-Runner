@@ -24,8 +24,11 @@ const commonSchema = mongoose.Schema({
         default:0,
         min:0
     },
-  
-    highestScore:{
+    currscore:{
+        type:Number,
+        default:0
+    },
+    highestscore:{
         type:Number,
         default:0
     },
