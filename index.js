@@ -5,6 +5,7 @@ import userRouter from './src/routers/user.router.js';
 import adminRouter from './src/routers/admin.router.js';
 import levelRouter from './src/routers/level.router.js';
 import versionRouter from './src/routers/versionRouter.js';
+import progressamountRouter from './src/routers/progressamount.router.js';
 //import achievementRouter from './src/routers/achievement.router.js';
 
 import cors from 'cors';
@@ -24,6 +25,7 @@ app.use("/level",levelRouter);
 //app.use("/achievement",achievementRouter);
 app.use("/version",versionRouter);
 app.use('/challenge',challengeRouter);
+app.use('/progressamount',progressamountRouter);
 
 
 const port = process.env.PORT || 7000;
