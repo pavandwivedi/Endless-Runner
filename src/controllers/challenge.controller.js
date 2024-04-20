@@ -13,6 +13,10 @@ export async function insertChallengeController(req, res) {
       if (!currUser) {
         return res.send(error(404, 'User not found'));
       }
+      const activeChallenge = await challengeModel.findOne({user, status:"incomplete"})
+      if(activeChallenge){
+        return res.send(error(400, 'You already have an active challenge'));
+      }
         const existingChallenge = await challengeModel.findOne({name});
         if(existingChallenge){
             await challengeModel.deleteOne({name});
@@ -41,8 +45,17 @@ export async function insertChallengeController(req, res) {
   
       currUser.challenges.push(createdChallenge._id);
       await currUser.save();
+
+      
+      const response = {
+        _id: createdChallenge._id,
+        name: createdChallenge.name,
+        startTime: createdChallenge.startTime,
+        status: createdChallenge.status,
+        user: createdChallenge.user
+    };
   
-      return res.send(success(200, "Challenge started successfully"));
+      return res.send(success(200, "Challenge started successfully",response));
     } catch (err) {
       return res.send(error(500, err.message));
     }
@@ -62,13 +75,21 @@ export async function updateChallengeController(req,res){
         const challengeInfo = await challengeModel.findOne({name});
 
 
-        if (status === "win") {
+        if (status === "complete") {
             // Assuming rewards is defined somewhere in your code
             currUser.INR += challengeDetails.rewards;
+            currUser.challenges = currUser.challenges.filter(challengeId => challengeId.toString() !==challengeInfo._id.toString())
             await currUser.save();
           }
 
+          const challengeDelete = await challengeModel.findOneAndDelete({name,user});
+          if(!challengeDelete){
+            return res.send(error(404,"No challenge have been played by you"));
+          }
+         challengeInfo.endTime = endTime;
           challengeInfo.status = status;
+          await challengeInfo.delete();
+          console.log("challenge deleted")
           await challengeInfo.save();
           return res.send(success(200,"challenge completed successfully"))
     } catch (err) {
@@ -77,15 +98,42 @@ export async function updateChallengeController(req,res){
 }
 export async function getAllChallengesController(req,res){
     try {
+      if(!req._id){
+        return 
+      }
         const user = req._id;
         const currUser = await userModel.findById(user);
         if (!currUser) {
             return res.send(error(404,'User does not exist!'));
           }
-        const allChallenges = await challengeModel.find({user}).populate('user');
-        if (!allChallenges){
-            return res.send(error(404,"no challenge have been played by you"));
-        }
+        // const allChallenges = await challengeModel.find({user}).populate('user');
+        // if (!allChallenges){
+        //     return res.send(error(404,"no challenge have been played by you"));
+        // }
+
+        const completedChallenges = await challengeModel.find({user})
+
+        const ongoingChallenges = await challengeModel.find({user, remainingTime:{$gt: 0}})
+
+        const allChallenges = [...completedChallenges,...ongoingChallenges]
+
+      if(allChallenges.length === 0) {
+        return res.send(error(404,"no challenge have been played by you"));
+      }
+      console.log(allChallenges)
+      
+        const challengesResponse = allChallenges.map(challenge => {
+          return {
+              _id: challenge._id,
+              name: challenge.name,
+              startTime: challenge.startTime,
+              remainingTime: challenge.remainingTime,
+              status: challenge.status,
+              duration: challenge.duration
+          };
+          
+      });
+   console.log(challengesResponse)
          console.log(allChallenges);
         return res.send(success(200,allChallenges));
        

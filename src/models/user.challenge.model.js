@@ -17,6 +17,8 @@ const challengeSchema = mongoose.Schema({
     
       status:{
         type:String,
+        enum:['complete','incomplete'],
+        default:'incomplete'
         
       },
       user : {
