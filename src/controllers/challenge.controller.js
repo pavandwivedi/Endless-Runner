@@ -17,10 +17,7 @@ export async function insertChallengeController(req, res) {
       if(activeChallenge){
         return res.send(error(400, 'You already have an active challenge'));
       }
-        // const existingChallenge = await challengeModel.findOne({name});
-        // if(existingChallenge){
-        //     await challengeModel.deleteOne({name});
-        // }
+      
       const challengeDetails = await createChallengeModel.findOne({ name });
       if (!challengeDetails) {
         return res.send(error(404, 'Challenge not found'));
@@ -29,9 +26,9 @@ export async function insertChallengeController(req, res) {
       if (!challengeDetails.isActive) {
         return res.send(error(400, 'Challenge is not active'));
       }
-      const now = new Date(); // Current UTC date
-    const utcOffset = 5.5 * 60 * 60 * 1000; // Indian Standard Time (IST) offset in milliseconds (UTC+5:30)
-    const istTime = new Date(now.getTime() + utcOffset); // Convert UTC to IST
+      const now = new Date(); 
+    const utcOffset = 5.5 * 60 * 60 * 1000; 
+    const istTime = new Date(now.getTime() + utcOffset); 
 
     // Create startTime and endTime based on IST
     const startTime = istTime;
@@ -41,13 +38,9 @@ export async function insertChallengeController(req, res) {
       const challengeInfo = new challengeModel({ user,startTime: startTime, endTime, name,
         taskamount:challengeDetails.taskamount,duration:challengeDetails.duration,status:"incomplete" });
       const createchallenges = await challengeInfo.save();
-  
-      
-  
-      currUser.challenges.push(createchallenges._id);
-      await currUser.save();
 
-      
+      currUser.challenges.push(createchallenges._id);
+      await currUser.save(); 
       const response = {
         _id: createchallenges._id,
         name: createchallenges.name,
@@ -111,10 +104,6 @@ export async function getAllChallengesController(req,res){
         if (!currUser) {
             return res.send(error(404,'User does not exist!'));
           }
-        // const allChallenges = await challengeModel.find({user}).populate('user');
-        // if (!allChallenges){
-        //     return res.send(error(404,"no challenge have been played by you"));
-        // }
 
         const completedChallenges = await challengeModel.find({user})
 
