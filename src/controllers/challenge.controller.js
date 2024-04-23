@@ -17,10 +17,10 @@ export async function insertChallengeController(req, res) {
       if(activeChallenge){
         return res.send(error(400, 'You already have an active challenge'));
       }
-        const existingChallenge = await challengeModel.findOne({name});
-        if(existingChallenge){
-            await challengeModel.deleteOne({name});
-        }
+        // const existingChallenge = await challengeModel.findOne({name});
+        // if(existingChallenge){
+        //     await challengeModel.deleteOne({name});
+        // }
       const challengeDetails = await createChallengeModel.findOne({ name });
       if (!challengeDetails) {
         return res.send(error(404, 'Challenge not found'));
@@ -52,8 +52,12 @@ export async function insertChallengeController(req, res) {
         name: createdChallenge.name,
         startTime: createdChallenge.startTime,
         status: createdChallenge.status,
-        user: createdChallenge.user
+        user: createdChallenge.user,
+        taskamount : createdChallenge.taskamount,
+        duration: createdChallenge.duration,
     };
+
+    console.log(response)
   
       return res.send(success(200, "Challenge started successfully",response));
     } catch (err) {
@@ -129,7 +133,8 @@ export async function getAllChallengesController(req,res){
               startTime: challenge.startTime,
               remainingTime: challenge.remainingTime,
               status: challenge.status,
-              duration: challenge.duration
+              duration: challenge.duration,
+              taskamount: challenge.taskamount,
           };
           
       });
