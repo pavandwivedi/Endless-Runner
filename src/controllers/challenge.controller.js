@@ -38,23 +38,24 @@ export async function insertChallengeController(req, res) {
     const endTime = new Date(startTime.getTime() + challengeDetails.duration);
 
   
-      const challengeInfo = new challengeModel({ user,startTime: startTime, endTime, name });
-      const createdChallenge = await challengeInfo.save();
+      const challengeInfo = new challengeModel({ user,startTime: startTime, endTime, name,
+        taskamount:challengeDetails.taskamount,duration:challengeDetails.duration,status:"incomplete" });
+      const createchallenges = await challengeInfo.save();
   
       
   
-      currUser.challenges.push(createdChallenge._id);
+      currUser.challenges.push(createchallenges._id);
       await currUser.save();
 
       
       const response = {
-        _id: createdChallenge._id,
-        name: createdChallenge.name,
-        startTime: createdChallenge.startTime,
-        status: createdChallenge.status,
-        user: createdChallenge.user,
-        taskamount : createdChallenge.taskamount,
-        duration: createdChallenge.duration,
+        _id: createchallenges._id,
+        name: createchallenges.name,
+        startTime: createchallenges.startTime,
+        status: createchallenges.status,
+        user: createchallenges.user,
+        taskamount : createchallenges.taskamount,
+        duration: createchallenges.duration,
     };
 
     console.log(response)
@@ -126,15 +127,15 @@ export async function getAllChallengesController(req,res){
       }
       console.log(allChallenges)
       
-        const challengesResponse = allChallenges.map(challenge => {
+        const challengesResponse = allChallenges.map(challenges => {
           return {
-              _id: challenge._id,
-              name: challenge.name,
-              startTime: challenge.startTime,
-              remainingTime: challenge.remainingTime,
-              status: challenge.status,
-              duration: challenge.duration,
-              taskamount: challenge.taskamount,
+              _id: challenges._id,
+              name: challenges.name,
+              startTime: challenges.startTime,
+              remainingTime: challenges.remainingTime,
+              status: challenges.status,
+              duration: challenges.duration,
+              taskamount: challenges.taskamount,
           };
           
       });
