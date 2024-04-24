@@ -2,6 +2,11 @@
 import mongoose from "mongoose";
 
 const createChallengeSchema = new mongoose.Schema({
+  referenceId: {
+    type: String,
+    unique: true, 
+    required: true
+  },
   name: {
     type: String,
     required: true

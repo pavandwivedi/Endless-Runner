@@ -4,7 +4,7 @@ import { generateAccessToken } from '../services/generateAccessToken.service.js'
 import adminModel from '../models/admin.model.js';
 import  {userModel}  from '../models/user.model.js';
 import createChallengeModel from  "../models/admin.challenge.model.js";
-
+import {generateUniqueReferenceId } from '../services/generateRefrenceid.js';
 
 export async function signupAdminController(req,res){
     try{
@@ -80,8 +80,10 @@ export async function createChallengeController(req, res) {
              return res.send(error(404,"insufficient data"))
         }
 
+        const referenceId = generateUniqueReferenceId();
         // Create a new challenge instance
         const newChallenge = new createChallengeModel({
+            referenceId,
             name,
             description,
             isActive: isActive || true, // Default isActive to true if not provided

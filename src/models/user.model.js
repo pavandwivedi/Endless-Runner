@@ -51,10 +51,13 @@ const commonSchema = mongoose.Schema({
         default:0
     },
     challenges:[
-        {
+        { challengeId:{
             type: mongoose.Schema.Types.ObjectId,
             ref:'challenge',
+        },
+        referenceId:String
 
+        
         }
     ],
     levels:[

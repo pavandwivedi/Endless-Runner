@@ -3,7 +3,7 @@ import challengeModel from "../models/user.challenge.model.js";
 import { userModel } from "../models/user.model.js";
 import {error,success} from  "../utills/responseWrapper.utill.js";
 import CompletedChallenge from "../models/completedChallenge.js";
-
+import {generateUniqueReferenceId } from '../services/generateRefrenceid.js';
 export async function insertChallengeController(req, res) {
     try {
       const user= req._id;
@@ -34,30 +34,64 @@ export async function insertChallengeController(req, res) {
     const startTime = istTime;
     const endTime = new Date(startTime.getTime() + challengeDetails.duration);
 
-  
-      const challengeInfo = new challengeModel({ user,startTime: startTime, endTime, name,
-        taskamount:challengeDetails.taskamount,duration:challengeDetails.duration,status:"incomplete" });
-      const createchallenges = await challengeInfo.save();
+    // const referenceId = generateUniqueReferenceId();
 
-      currUser.challenges.push(createchallenges._id);
-      await currUser.save(); 
-      const response = {
+    const challengeInfo = new challengeModel({
+        user,
+        startTime,
+        endTime,
+        name,
+        taskamount: challengeDetails.taskamount,
+        duration: challengeDetails.duration,
+        status: "incomplete",
+        referenceId: challengeDetails.referenceId // Include the referenceId
+    });
+    const createchallenges = await challengeInfo.save();
+
+    currUser.challenges.push({ challengeId: createchallenges._id, referenceId: challengeDetails.referenceId}); // Include referenceId in the user's challenges array
+    await currUser.save();
+
+    const response = {
         _id: createchallenges._id,
         name: createchallenges.name,
         startTime: createchallenges.startTime,
         status: createchallenges.status,
         user: createchallenges.user,
-        taskamount : createchallenges.taskamount,
+        taskamount: createchallenges.taskamount,
         duration: createchallenges.duration,
+        referenceId:challengeDetails.referenceId // Include the referenceId in the response
     };
 
-    console.log(response)
+    return res.send(success(200, "Challenge started successfully", response));
+} catch (err) {
+    return res.send(error(500, err.message));
+}
+}
   
-      return res.send(success(200, "Challenge started successfully",response));
-    } catch (err) {
-      return res.send(error(500, err.message));
-    }
-  }
+  //     const challengeInfo = new challengeModel({ user,startTime: startTime, endTime, name,
+  //       taskamount:challengeDetails.taskamount,duration:challengeDetails.duration,status:"incomplete" });
+  //     const createchallenges = await challengeInfo.save();
+
+  //     currUser.challenges.push(createchallenges._id);
+  //     await currUser.save(); 
+  //     const response = {
+  //       _id: createchallenges._id,
+  //       name: createchallenges.name,
+  //       startTime: createchallenges.startTime,
+  //       status: createchallenges.status,
+  //       user: createchallenges.user,
+  //       taskamount : createchallenges.taskamount,
+  //       duration: createchallenges.duration,
+  //       refrenceId
+  //   };
+
+  //   console.log(response)
+  
+  //     return res.send(success(200, "Challenge started successfully",response));
+  //   } catch (err) {
+  //     return res.send(error(500, err.message));
+  //   }
+  // }
 export async function updateChallengeController(req,res){
     try {
 
