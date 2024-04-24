@@ -67,31 +67,7 @@ export async function insertChallengeController(req, res) {
     return res.send(error(500, err.message));
 }
 }
-  
-  //     const challengeInfo = new challengeModel({ user,startTime: startTime, endTime, name,
-  //       taskamount:challengeDetails.taskamount,duration:challengeDetails.duration,status:"incomplete" });
-  //     const createchallenges = await challengeInfo.save();
 
-  //     currUser.challenges.push(createchallenges._id);
-  //     await currUser.save(); 
-  //     const response = {
-  //       _id: createchallenges._id,
-  //       name: createchallenges.name,
-  //       startTime: createchallenges.startTime,
-  //       status: createchallenges.status,
-  //       user: createchallenges.user,
-  //       taskamount : createchallenges.taskamount,
-  //       duration: createchallenges.duration,
-  //       refrenceId
-  //   };
-
-  //   console.log(response)
-  
-  //     return res.send(success(200, "Challenge started successfully",response));
-  //   } catch (err) {
-  //     return res.send(error(500, err.message));
-  //   }
-  // }
 export async function updateChallengeController(req,res){
     try {
 
