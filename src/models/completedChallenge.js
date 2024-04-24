@@ -17,6 +17,9 @@ const completechallengeSchema = mongoose.Schema({
         type:String,
         enum:['complete','incomplete'],
         default:'complete'
+    },
+    referenceId:{
+        type:String
     }
 })
 const CompletedChallenge = mongoose.model('completedChallenge',completechallengeSchema)

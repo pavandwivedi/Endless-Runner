@@ -98,7 +98,8 @@ export async function updateChallengeController(req,res){
             const completedChallenge = new CompletedChallenge({
               user:user,
               challenge: challengeInfo._id,
-             status:status
+             status:status,
+             referenceId:challengeInfo.referenceId
             })
             console.log(completedChallenge)
             await completedChallenge.save();
