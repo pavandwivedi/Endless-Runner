@@ -2,6 +2,7 @@ import express from 'express';
 import { addMovesController, authenticLoginController, decreaseCoinsController, decreaseVehiclePowerController, facebookLoginController, getUnlockLevels, getUserController, guestLoginController, referAndEarnController, updateCoinController, updateDistanceController,  updateScoreController,  updateUserController, updateVehiclePowerController } from '../controllers/user.controller.js';
 import { checkUserLogin } from '../middlewares/user.middleware.js';
 import { getChallengeController } from '../controllers/admin.controller.js';
+import {getCompletedChallengesController} from '../controllers/challenge.controller.js'
 
 const userRouter = express.Router();
 
@@ -19,5 +20,6 @@ userRouter.post('/decreaseVehiclePower',checkUserLogin,decreaseVehiclePowerContr
 userRouter.get("/unlockLevelCount",checkUserLogin,getUnlockLevels);
 userRouter.get('/updateUser',checkUserLogin,updateUserController);
 userRouter.put("/addMoves",checkUserLogin,addMovesController);
-userRouter.get('/getchallenge',getChallengeController);
+userRouter.get('/getchallenge',checkUserLogin,getChallengeController);
+userRouter.get('/completedchallenge',getCompletedChallengesController)
 export default userRouter;    
