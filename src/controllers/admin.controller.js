@@ -124,15 +124,11 @@ export async function updateChallengeController(req, res) {
 
     try {
        
-        // Find the challenge by ID
         const existingChallenge = await createChallengeModel.findById(id);
 
-        // Check if the challenge exists
         if (!existingChallenge) {
             return res.send(error(404, "Challenge not found"));
         }
-
-        // Update the challenge fields if provided
         if (name) {
             existingChallenge.name = name;
         }
@@ -155,8 +151,6 @@ export async function updateChallengeController(req, res) {
             existingChallenge.challengetype = challengetype;
         }
 
-
-        // Save the updated challenge to the database
         const updatedChallenge = await existingChallenge.save();
 
         return res.send(success(200, "Challenge updated successfully",updatedChallenge));

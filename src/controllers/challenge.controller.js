@@ -147,6 +147,7 @@ export async function getAllChallengesController(req,res){
               status: challenges.status,
               duration: challenges.duration,
               taskamount: challenges.taskamount,
+              referenceId:challenges.referenceId
           };
           
       });
