@@ -59,7 +59,7 @@ export async function insertChallengeController(req, res) {
         user: createchallenges.user,
         taskamount: createchallenges.taskamount,
         duration: createchallenges.duration,
-        referenceId:challengeDetails.referenceId // Include the referenceId in the response
+        referenceId:challengeDetails.referenceId 
     };
 
     return res.send(success(200, "Challenge started successfully", response));
