@@ -5,7 +5,7 @@ import {userModel} from "../models/user.model.js";
 import { generateAccessToken } from "../services/generateAccessToken.service.js";
 import { error, success } from "../utills/responseWrapper.utill.js";
 import {generateUniqueReferralCode} from "../services/generateReferalCode.js"
-
+import challengeModel from "../models/user.challenge.model.js";
 export async function guestLoginController(req, res) {
     try {
         const { deviceID } = req.body;
@@ -340,7 +340,6 @@ export async function getUnlockLevels(req,res){
 }
 
 
-
 export async function addMovesController(req,res){
     try {
         console.log("add moves");
@@ -355,4 +354,28 @@ export async function addMovesController(req,res){
     }
 }
 
+export async function updateInrController(req,res){
+    try{
+        const {userID,referenceId,inrIncrease} = req.body;
 
+        if(!userID || !referenceId || !inrIncrease){
+            return res.send(error(400," Fill all the details"));
+        }  
+        const user = await userModel.findById(userID);
+        if(!user){
+            return res.send(error(404,"user not found"));
+        } 
+    //     const challenge = await challengeModel.find.referenceId
+    //     if (!challenge || !challenge.status !== "complete"){
+    //         return res.send(error(404,"Challenge Not completed yet by user"));
+    // }
+    user.INR += inrIncrease;
+    await user.save();
+
+    return res.send(success(200,{message:"INR updated Sucessfully"}));
+    } catch (err) {
+        return res.send(error(500,err.message));
+    
+   }
+
+}
