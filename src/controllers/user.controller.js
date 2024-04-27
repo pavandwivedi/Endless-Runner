@@ -356,15 +356,17 @@ export async function addMovesController(req,res){
 
 export async function updateInrController(req,res){
     try{
-        const {userID,referenceId,inrIncrease} = req.body;
+        const userID = req._id;
+        const {referenceId,inrIncrease} = req.body;
 
-        if(!userID || !referenceId || !inrIncrease){
+        if( !referenceId || !inrIncrease){
             return res.send(error(400," Fill all the details"));
         }  
         const user = await userModel.findById(userID);
         if(!user){
             return res.send(error(404,"user not found"));
-        } 
+        }
+        
     //     const challenge = await challengeModel.find.referenceId
     //     if (!challenge || !challenge.status !== "complete"){
     //         return res.send(error(404,"Challenge Not completed yet by user"));
