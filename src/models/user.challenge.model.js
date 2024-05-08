@@ -18,6 +18,9 @@ const challengeSchema = mongoose.Schema({
         type: Date,
         required: true
       },
+      rewards:{
+        type:Number
+      },
     
       status:{
         type:String,
